@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- FIDESBANK - GATEWAY POM.XML -->
+<project
+		xmlns="http://maven.apache.org/POM/4.0.0"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<!-- Parent Pom -->
+	<parent>
+		<groupId>com.fidesbank</groupId>
+		<artifactId>fides-bank</artifactId>
+		<version>1.0.0</version>
+		<relativePath>../pom.xml</relativePath>
+	</parent>
+
+	<!-- Project Information -->
+	<groupId>com</groupId>
+	<artifactId>gateway</artifactId>
+	<version>0.0.1</version>
+	<modelVersion>4.0.0</modelVersion>
+	<name>gateway</name>
+	<packaging>jar</packaging>
+	<description>Gateway Microservice</description>
+
+	<!-- Gateway Microservice Dependencies -->
+	<dependencies>
+
+		<!-- Spring Cloud Gateway -->
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-gateway</artifactId>
+		</dependency>
+		<!-- Spring Cloud Eureka Client -->
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+		</dependency>
+
+		<!-- Spring Security -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
+	</dependencies>
+
+</project>

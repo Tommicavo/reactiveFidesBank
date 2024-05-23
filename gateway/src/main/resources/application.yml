@@ -1,0 +1,35 @@
+spring:
+  application:
+    name: gateway
+  main:
+    web-application-type: reactive
+    allow-bean-definition-overriding: true
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+      routes:
+        - id: user
+          # Use uri: lb://user if you run microservice on your local machine
+          # Use uri: http://user-service:9095 if you run microservice image from within Docker Container
+          uri: http://user-service:9095
+          predicates:
+            - Path=/users/**
+        - id: bank
+          # Use uri: lb://bank if you run microservice on your local machine
+          # Use uri: http://bank-service:9094 if you run microservice image from within Docker Container
+          uri: http://bank-service:9094
+          predicates:
+            - Path=/banks/**
+
+server:
+  port: 9090
+
+eureka:
+  client:
+    service-url:
+      # Use defaultZone: http://localhost:8761/eureka if you run microservices on your local machine
+      # Use defaultZone: http://eureka-service:8761/eureka if you run microservices images from within Docker Containers
+      defaultZone: http://eureka-service:8761/eureka

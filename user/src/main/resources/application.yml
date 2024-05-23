@@ -1,0 +1,17 @@
+# NOTE
+# Use defaultZone: http://localhost:8761/eureka if you run microservices on your local machine
+# Use defaultZone: http://eureka-service:8761/eureka if you run microservices images from within Docker Containers
+
+spring:
+  application:
+    name: user
+
+server:
+  port: 9095
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://eureka-service:8761/eureka
+  instance:
+    prefer-ip-address: true
