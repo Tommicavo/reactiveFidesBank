@@ -1,9 +1,6 @@
 package it.fides.gateway.services;
 
-import it.fides.gateway.models.dtos.LoginDto;
-import it.fides.gateway.models.dtos.RoleDto;
-import it.fides.gateway.models.dtos.SigninDto;
-import it.fides.gateway.models.dtos.UserDto;
+import it.fides.gateway.models.dtos.*;
 import it.fides.gateway.models.entities.BlackTokenEntity;
 import it.fides.gateway.models.enums.RoleEnum;
 import it.fides.gateway.models.repositories.BlackTokenRepository;

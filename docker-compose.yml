@@ -17,7 +17,7 @@ services:
     ports:
       - "9090:9090"
     environment:
-      SPRING_R2DBC_URL: r2dbc:mysql://host.docker.internal:3306/reactive_fides_bank_db
+      SPRING_R2DBC_URL: r2dbc:mysql://host.docker.internal:3306/fides_bank_db
       SPRING_R2DBC_USERNAME: root
       SPRING_R2DBC_PASSWORD: root
       SPRING_R2DBC_DRIVER: com.mysql.cj.r2dbc.Driver
@@ -31,7 +31,7 @@ services:
     ports:
       - "9095:9095"
     environment:
-      SPRING_R2DBC_URL: r2dbc:mysql://host.docker.internal:3306/reactive_fides_bank_db
+      SPRING_R2DBC_URL: r2dbc:mysql://host.docker.internal:3306/fides_bank_db
       SPRING_R2DBC_USERNAME: root
       SPRING_R2DBC_PASSWORD: root
       SPRING_R2DBC_DRIVER: com.mysql.cj.r2dbc.Driver
@@ -45,7 +45,21 @@ services:
     ports:
       - "9094:9094"
     environment:
-      SPRING_R2DBC_URL: r2dbc:mysql://host.docker.internal:3306/reactive_fides_bank_db
+      SPRING_R2DBC_URL: r2dbc:mysql://host.docker.internal:3306/fides_bank_db
+      SPRING_R2DBC_USERNAME: root
+      SPRING_R2DBC_PASSWORD: root
+      SPRING_R2DBC_DRIVER: com.mysql.cj.r2dbc.Driver
+    networks:
+      - fides-bank-network
+
+  account-service:
+    build:
+      context: ./account
+      dockerfile: DockerFile.yml
+    ports:
+      - "9096:9096"
+    environment:
+      SPRING_R2DBC_URL: r2dbc:mysql://host.docker.internal:3306/fides_bank_db
       SPRING_R2DBC_USERNAME: root
       SPRING_R2DBC_PASSWORD: root
       SPRING_R2DBC_DRIVER: com.mysql.cj.r2dbc.Driver

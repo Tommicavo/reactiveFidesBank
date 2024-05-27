@@ -3,6 +3,7 @@ package it.fides.bank.services;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import it.fides.bank.models.dtos.JwtData;
 import it.fides.bank.models.entities.BankEntity;
 import it.fides.bank.models.repositories.BankRepository;
 import it.fides.bank.util.BankLogger;
@@ -12,7 +13,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-
 import java.util.Objects;
 
 @Service
@@ -31,10 +31,13 @@ public class BankService {
         return Mono.just("Bank Microservice ok");
     }
 
-    public String getRoleFromAuthHeader(ServerWebExchange exchange) {
+    public JwtData extractJwtData(ServerWebExchange exchange) {
         String token = Objects.requireNonNull(exchange.getRequest().getHeaders().getFirst("Authorization")).substring(7);
-        Claims claims = Jwts.parserBuilder().setSigningKey(Keys.hmacShaKeyFor(SECRET_KEY.getBytes())).build().parseClaimsJws(token).getBody();
-        return (String) claims.get("role");
+        Long id = Long.parseLong(Jwts.parserBuilder().setSigningKey(Keys.hmacShaKeyFor(SECRET_KEY.getBytes()))
+                .build().parseClaimsJws(token).getBody().getSubject());
+        String role = (String) Jwts.parserBuilder().setSigningKey(Keys.hmacShaKeyFor(SECRET_KEY.getBytes()))
+                .build().parseClaimsJws(token).getBody().get("role");
+        return new JwtData(id, role);
     }
 
     public Flux<BankEntity> getAllBanks() {

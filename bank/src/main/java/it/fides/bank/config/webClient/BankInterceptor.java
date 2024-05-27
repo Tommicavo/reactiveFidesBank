@@ -8,11 +8,10 @@ import org.springframework.web.server.ServerWebExchange;
 import org.springframework.web.server.WebFilter;
 import org.springframework.web.server.WebFilterChain;
 import reactor.core.publisher.Mono;
+import reactor.util.context.Context;
 
 @Component
 public class BankInterceptor implements WebFilter {
-
-    private static final ThreadLocal<String> AUTHORIZATION_HEADER = new ThreadLocal<>();
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
@@ -39,8 +38,7 @@ public class BankInterceptor implements WebFilter {
             return sendErrorResponse(response, HttpStatus.FORBIDDEN, "Missing authorization token");
         }
 
-        AUTHORIZATION_HEADER.set(authHeader);
-        return chain.filter(exchange);
+        return chain.filter(exchange).contextWrite(Context.of("Authorization", authHeader));
     }
 
     private Mono<Void> sendErrorResponse(ServerHttpResponse response, HttpStatus status, String message) {
@@ -48,13 +46,5 @@ public class BankInterceptor implements WebFilter {
         response.getHeaders().add("Content-Type", "application/json");
         String body = "{\"error\": \"" + message + "\"}";
         return response.writeWith(Mono.just(response.bufferFactory().wrap(body.getBytes())));
-    }
-
-    public static String getAuthorizationHeader() {
-        return AUTHORIZATION_HEADER.get();
-    }
-
-    public static void clearAuthorizationHeader() {
-        AUTHORIZATION_HEADER.remove();
     }
 }

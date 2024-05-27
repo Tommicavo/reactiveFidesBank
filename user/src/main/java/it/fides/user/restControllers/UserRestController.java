@@ -1,9 +1,11 @@
 package it.fides.user.restControllers;
 
 import it.fides.user.config.webClient.GatewayClient;
+import it.fides.user.models.dtos.EnrollmentDto;
 import it.fides.user.models.dtos.TestDto;
 import it.fides.user.models.dtos.UserDto;
 import it.fides.user.models.entities.UserEntity;
+import it.fides.user.services.UserAccountService;
 import it.fides.user.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +22,9 @@ public class UserRestController {
 
     @Autowired
     private GatewayClient gatewayClient;
+
+    @Autowired
+    private UserAccountService userAccountService;
 
     @GetMapping("/healthcheck")
     public Mono<String> healthcheck() {
@@ -55,5 +60,10 @@ public class UserRestController {
     @GetMapping("/testRole")
     public Mono<String> testRole(ServerWebExchange exchange) {
         return Mono.just(userService.getRoleFromAuthHeader(exchange)).switchIfEmpty(Mono.error(new RuntimeException("Role not retrieved from auth header")));
+    }
+
+    @PostMapping("/accounts/enrollment")
+    public Mono<String> assignOwnersToAccount(@RequestBody EnrollmentDto enrollmentDto) {
+        return userAccountService.assignOwnersToAccount(enrollmentDto);
     }
 }

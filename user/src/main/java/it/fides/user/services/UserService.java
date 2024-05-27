@@ -3,6 +3,7 @@ package it.fides.user.services;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import it.fides.user.models.dtos.JwtData;
 import it.fides.user.models.dtos.SigninDto;
 import it.fides.user.models.dtos.UserDto;
 import it.fides.user.models.entities.UserEntity;
@@ -41,10 +42,13 @@ public class UserService {
         return Mono.just("User Microservice ok");
     }
 
-    public String getRoleFromAuthHeader(ServerWebExchange exchange) {
+    public JwtData extractJwtData(ServerWebExchange exchange) {
         String token = Objects.requireNonNull(exchange.getRequest().getHeaders().getFirst("Authorization")).substring(7);
-        Claims claims = Jwts.parserBuilder().setSigningKey(Keys.hmacShaKeyFor(SECRET_KEY.getBytes())).build().parseClaimsJws(token).getBody();
-        return (String) claims.get("role");
+        Long id = Long.parseLong(Jwts.parserBuilder().setSigningKey(Keys.hmacShaKeyFor(SECRET_KEY.getBytes()))
+                .build().parseClaimsJws(token).getBody().getSubject());
+        String role = (String) Jwts.parserBuilder().setSigningKey(Keys.hmacShaKeyFor(SECRET_KEY.getBytes()))
+                .build().parseClaimsJws(token).getBody().get("role");
+        return new JwtData(id, role);
     }
 
     public Flux<UserEntity> getAllUsers() {

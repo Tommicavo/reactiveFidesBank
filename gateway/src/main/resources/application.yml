@@ -23,6 +23,12 @@ spring:
           uri: http://bank-service:9094
           predicates:
             - Path=/banks/**
+        - id: account
+          # Use uri: lb://account if you run microservice on your local machine
+          # Use uri: http://account-service:9096 if you run microservice image from within Docker Container
+          uri: http://account-service:9096
+          predicates:
+            - Path=/accounts/**
 
 server:
   port: 9090

@@ -1,0 +1,5 @@
+FROM amazoncorretto:17
+WORKDIR /app
+COPY target/account-0.0.1.jar /app/app.jar
+EXPOSE 9096
+CMD ["java", "-jar", "app.jar"]

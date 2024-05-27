@@ -13,13 +13,15 @@ public class TokenExchangeFilter implements ExchangeFilterFunction {
 
     @Override
     public Mono<ClientResponse> filter(ClientRequest request, ExchangeFunction next) {
-        String authHeader = BankInterceptor.getAuthorizationHeader();
-        if (authHeader == null || !authHeader.startsWith("Bearer")) {
-            throw new IllegalStateException("Missing AuthorizationHeader");
-        }
-        ClientRequest updatedRequest = ClientRequest.from(request)
-                .header(HttpHeaders.AUTHORIZATION, authHeader)
-                .build();
-        return next.exchange(updatedRequest);
+        return Mono.deferContextual(ctx -> {
+            if (!ctx.hasKey("Authorization")) {
+                return Mono.error(new IllegalStateException("Missing Authorization Header"));
+            }
+            String authHeader = ctx.get("Authorization");
+            ClientRequest updatedRequest = ClientRequest.from(request)
+                    .header(HttpHeaders.AUTHORIZATION, authHeader)
+                    .build();
+            return next.exchange(updatedRequest);
+        });
     }
 }

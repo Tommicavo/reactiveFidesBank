@@ -17,7 +17,6 @@ public class GatewayApplication {
 		initializer.setDatabasePopulator(new ResourceDatabasePopulator(new ClassPathResource("schema.sql")));
 		return initializer;
 	}
-
 	public static void main(String[] args) {
 		SpringApplication.run(GatewayApplication.class, args);
 	}

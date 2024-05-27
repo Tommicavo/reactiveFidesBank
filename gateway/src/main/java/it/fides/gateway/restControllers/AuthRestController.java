@@ -1,5 +1,6 @@
 package it.fides.gateway.restControllers;
 
+import it.fides.gateway.models.dtos.JwtData;
 import it.fides.gateway.models.dtos.LoginDto;
 import it.fides.gateway.models.dtos.SigninDto;
 import it.fides.gateway.services.AuthService;

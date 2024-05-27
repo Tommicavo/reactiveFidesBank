@@ -2,6 +2,7 @@
 
 ## Main Technologies
 - **Language**: Java 17
+- **Maven**: 3.9.6
 - **Framework**: Spring Boot 3.2.5
 - **Database**: MySQL
 
